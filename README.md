@@ -1,2 +1,2 @@
-# Nodejs-ConnectMe
-내 첫 개인프로젝트 🤯
+# Nodejs_study
+node.js 기능들 공부하기 🧐
