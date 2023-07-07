@@ -32,15 +32,18 @@ app.post('/process/adduser', (req, res)=> { //req (웹 브라우저로부터 들
 
         if (err){
             conn.release();
-            console.log('get connetion error');
+            console.log('get connetion error. aborted');
+            res.writeHead('200', {'content-Type':'text/html; charset=utf8'})
+            res.write('<h3>sql 연결 실패</h3>')
+            res.end
             return;
         }
 
         console.log('db 연결 끈');
 
-        conn.query('insert into user (id, name, age, password) values (?,?,?,password(?))', //password는 MySQL에서 지원하는 함수이다.
-                     [paramId, paramName, paramAge, paramPassword])
-                     (err, result)=>{
+        conn.query('insert into user (id, name, age, password) values (?,?,?,password(?));' //password는 MySQL에서 지원하는 함수이다.
+                     [paramId, paramName, paramAge, paramPassword],
+                     (err, result)=> {
                         conn.release();
                         console.log('실행된 SQL: '+exec.sql)
 
@@ -53,8 +56,26 @@ app.post('/process/adduser', (req, res)=> { //req (웹 브라우저로부터 들
                         if (result){
                             console.dir(result)
                             console.log('Inserted 성공')
+
+                            res.writeHead('200', {'Content-Type':'text/html; charset=utf8'})
+                            res.write('<h3>추가하였습니다.</h3>')
+                            res.end();
+                        }
+                        
+                        else {
+                            console.log('Inserted 실패')
+
+                            res.writeHead('200', {'Content-Type':'text/html; charset=utf8'})
+                            res.write('<h3>실패하였습니다.</h3>')
+                            res.end();
                         }
                      }
+        )
+    
 
     })
+});
+
+app.listen(3000, ()=> {
+    console.log('listenig to 3000!')
 })
