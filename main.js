@@ -5,6 +5,15 @@ var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml = require('sanitize-html');
+var mysql = require('mysql');
+var db = mysql.createConnection({
+    host : '127.0.0.1',
+    user : 'jeongyun',
+    port : '3306',
+    password : 'wqeruiy0605!',
+    database : 'Jeongyun'
+});
+db.connect();
 
 var app = http.createServer(function(request,response){
     var _url = request.url;
@@ -12,13 +21,25 @@ var app = http.createServer(function(request,response){
     var pathname = url.parse(_url, true).pathname;
     if(pathname === '/'){
       if(queryData.id === undefined){
-        fs.readdir('./data', function(error, filelist){
+        // fs.readdir('./data', function(error, filelist){
+        //   var title = 'Welcome';
+        //   var description = 'Hello, Node.js';
+        //   var list = template.list(filelist);
+        //   var html = template.HTML(title, list,
+        //     `<h2>${title}</h2>${description}`,
+        //     `<a href="/create">create</a>`
+        //   );
+        //   response.writeHead(200);
+        //   response.end(html);
+        // });
+        db.query(`select * from topic`, function(error, topics){
+          console.log(topics);
           var title = 'Welcome';
           var description = 'Hello, Node.js';
-          var list = template.list(filelist);
+          var list = template.list(topics);
           var html = template.HTML(title, list,
-            `<h2>${title}</h2>${description}`,
-            `<a href="/create">create</a>`
+          `<h2>${title}</h2>${description}`,
+          `<a href="/create">create</a>`
           );
           response.writeHead(200);
           response.end(html);
