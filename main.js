@@ -4,16 +4,7 @@ var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
-var sanitizeHtml = require('sanitize-html');
-var mysql = require('mysql');
-var db = mysql.createConnection({ //db.connection()을 호출하여 연결한다.
-    host : '127.0.0.1',
-    user : 'jeongyun',
-    port : '3306',
-    password : 'wqeruiy0605!',
-    database : 'Jeongyun'
-});
-db.connect();
+var db = require('./lib/db.js');
 
 var app = http.createServer(function(request,response){ // 서버 생성
     var _url = request.url; 
