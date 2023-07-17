@@ -5,6 +5,7 @@ var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
 var db = require('./lib/db.js');
+var topic = require('./lib/topic')
 
 var app = http.createServer(function(request,response){ // 서버 생성
     var _url = request.url; 
@@ -12,18 +13,8 @@ var app = http.createServer(function(request,response){ // 서버 생성
     var pathname = url.parse(_url, true).pathname;
     if(pathname === '/'){ // 메인페이지
       if(queryData.id === undefined){
-        db.query(`select * from topic`, function(error, topics){
-          var title = 'Welcome';
-          var description = 'Hello, Node.js';
-          var list = template.list(topics);
-          var html = template.HTML(title, list,
-          `<h2>${title}</h2>${description}`,
-          `<a href="/create">create</a>`
-          );
-          response.writeHead(200);
-          response.end(html); // response.writeHead, response.end를 사용하여 클라이언트에 응답
-        });
-      } else {
+        topic.home(request, response);
+      }else {
         db.query(`select * from topic`, function(error, topics){
           if(error){
             throw error;
