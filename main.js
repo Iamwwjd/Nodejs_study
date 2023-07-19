@@ -27,7 +27,10 @@ var app = http.createServer(function(request,response){ // 서버 생성
         topic.update_process(request, response);
     } else if(pathname === '/delete_process'){
         topic.delete_process(request. response);
-    } else {
+    } else if(pathname === '/author'){
+      author.home(request. response);
+    }
+    else {
       response.writeHead(404);
       response.end('Not found');
     }
