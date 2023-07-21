@@ -29,6 +29,8 @@ var app = http.createServer(function(request,response){ // 서버 생성
         topic.delete_process(request. response);
     } else if(pathname === '/author'){
       author.home(request. response);
+    } else if(pathname === '/create_author_process'){
+      author.create_author_process(request, response);
     }
     else {
       response.writeHead(404);
