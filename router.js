@@ -24,12 +24,13 @@ router.post('/reqister', (req,res,next) => {
     res.end()
 })
 
-Router.post('/login', (req, res, next) =>{
-    param = [req.body.id, req.body.pw]
-    db.query('select * from member where id=?', param[0],(err,row) =>{
+router.post('/login', (req, res, next) =>{
+    const param = [req.body.id, req.body.pw]
+
+    conn.query('select * from member where id=?', param[0],(err,row) =>{
         
         if(err){
-            console.log(err)
+            console.log(err);
         }
 
         if(row.length > 0){
@@ -45,7 +46,7 @@ Router.post('/login', (req, res, next) =>{
         }else{
             console.log('ID가 존재하지 않습니다.');
         }
-    })
+    });
     res.end
 })
 
