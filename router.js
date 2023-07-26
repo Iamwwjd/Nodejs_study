@@ -25,7 +25,7 @@ router.post('/reqister', (req,res,next) => {
 })
 
 router.post('/login', (req, res, next) =>{
-    const param = [req.body.id, req.body.pw]
+    const param = [req.body.id, req.body.pw];
 
     conn.query('select * from member where id=?', param[0],(err,row) =>{
         
@@ -37,9 +37,21 @@ router.post('/login', (req, res, next) =>{
             bcrypt.compare(param[1], row[0].pw, (error, result)=>{
                 if(result){
                     console.log('로그인에 성공하였습니다.');
+
+                    // 세션에 로그인 데이터 저장
+                    req.session.loginData = {
+                        id: row[0].id,
+                        name: row[0].name
+                    };
+
+                    req.session.save(error => {
+                        if (error) console.log(error);
+                        res.json({ message: "success"});
+                    });
                 }
                 else{
                     console.log('로그인에 실패하였습니다.');
+                    res.json({message : 'fail'})
                 }
             })
         
@@ -49,5 +61,16 @@ router.post('/login', (req, res, next) =>{
     });
     res.end
 })
+
+router.get('/loginCheck', (req, res) =>{
+    if(req.session.loginData){
+        res.send({loggedIn : true, loginData: req.session.loginData})
+    }
+    else{
+        res.send({loggedIn : false})
+    }
+})
+
+
 
 module.exports = router;
