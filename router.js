@@ -7,7 +7,7 @@ let conn = db_config.init();
 db_config.connect(conn);
 
 const bcrypt = require('bcrypt')
-const saltRounds = 10 // 암호화를 몇번 진행할건지
+const saltRounds = 10 /** 암호화를 몇번 진행할건지 */ 
 
 
 router.post('/reqister', (req,res,next) => {
