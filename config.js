@@ -1,4 +1,6 @@
-var mysql = require("mysql");
+const express = require("express");
+const router = express.Router();
+const mysql = require('mysql');
 require("dotenv").config();
 
 var db_info = {
@@ -15,8 +17,13 @@ module.exports = {
   },
   connect: function (conn) {
     conn.connect(function (err) {
-      if (err) console.error("mysql connection error : " + err);
-      else console.log("mysql is connected successfully!");
-    });
+      if (err) {
+        console.error("mysql connection error : " + err);}
+      else {
+        console.log("mysql is connected successfully!");}
+    })
+    createConnection.end();
   },
 };
+
+module.exports=router;
