@@ -104,20 +104,3 @@ router.post('/delete', function(req,res,next){
 });
 // 삭제기능은 수정기능과 거의 비슷함 
 module.exports = router;
-
-exports.viewGetMid = (req, res) => {
-    const index = Number(req.query.index);
-    const query = `SELECT board.subject, user.name AS username, board.content
-                      FROM board
-                      JOIN user
-                      ON board.author = user._id
-                      WHERE board._id = ${index}
-                      `;
-    db.query(query, (error, result) => {
-      if (error) return console.log(error);
-  
-      if (result) {
-        res.render('board/view.html', { posting: result[0] });
-      }
-    });
-  };
