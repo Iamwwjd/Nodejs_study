@@ -11,7 +11,7 @@ var db_info = {
   database: "Jeongyun",
 };
 
-module.exports = {
+const db_config = {
   init: function () {
     return mysql.createConnection(db_info);
   },
@@ -26,4 +26,7 @@ module.exports = {
   },
 };
 
-module.exports=router;
+module.exports= {
+  db_config: this.db_config,
+  router: router,
+};
