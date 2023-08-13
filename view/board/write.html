@@ -1,0 +1,21 @@
+exports.writeGetMid = (req, res) => {
+    const { name } = req.session.user;
+    res.render('board/write.html', { username: name });
+  };
+  
+  exports.writePostMid = (req, res) => {
+    const { _id } = req.session.user;
+    const { subject, content } = req.body;
+    if (subject === '' || content === '') {
+      res.send(alertMove('/board/write', '공백은 입력이 불가능 합니다'));
+    } else {
+      const query = `INSERT board (subject, content, author)
+                   VALUES ("${subject}","${content}","${_id}")`;
+      db.query(query, (error, result) => {
+        if (error) return console.log(error);
+  
+        if (result) res.redirect(`/board/view?index=${result.insertId}`);
+      });
+    }
+  };
+  
