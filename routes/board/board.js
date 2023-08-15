@@ -44,3 +44,30 @@ exports.editGetMid = (req, res) => {
       }
     });
   };
+
+  let { index } = req.query;
+  index = Number(index);
+
+  const query = `SELECT _id ,author FROM board WHERE _id = ${index}`;
+
+  db.query(query, (error, result) => {
+    if (error) return console.log(error);
+
+    if (result) {
+      const { _id } = req.session.user;
+      if (result[0].author !== _id) {
+        res.send(
+          alertMove(
+            `/board/view?index=${result[0]._id}`,
+            '본인이 작성한 글만 삭제할 수 있습니다.'
+          )
+        );
+      } else {
+        const query = `DELETE FROM board WHERE _id = ${index}`;
+        db.query(query, (error, result) => {
+          if (error) return console.log(error);
+          res.send(alertMove('/board/list', '글이 삭제 되었습니다.'));
+        });
+      }
+    }
+  });​
